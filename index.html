@@ -41,7 +41,7 @@
       <div class="logo"><div class="logo-mark"></div> Deon</div>
       <nav>
         <a href="about.html">About</a>
-        <a href="#feeds">News</a>
+        <a href="news.html">News</a>
         <a href="#contact">Contact</a>
       </nav>
     </header>
@@ -63,26 +63,4 @@
       <h2>Contact</h2>
       <p class="muted">Replace the links with your real profiles.</p>
       <p>
-        <a class="btn ghost" href="https://www.linkedin.com/in/deon-ludeke/" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="btn ghost" href="https://discord.com/users/deon3366" target="_blank" rel="noopener">Discord</a>
-      </p>
-    </section>
-
-    <footer>© <span id="year"></span> Deon • Built with HTML/CSS • Deployed via Cloudflare Pages</footer>
-  </div>
-
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    async function loadFeeds() {
-      try {
-        const res = await fetch('/api/feeds', { headers: { 'accept': 'application/json' }});
-        if (!res.ok) throw new Error('Bad response');
-        const { feeds } = await res.json();
-
-        const by = (needle) => feeds.find(f => f.source.toLowerCase().includes(needle));
-
-        const render = (el, items) => {
-          el.innerHTML = items.map(i => `
-            <li>
-              <a href
+        <a class="btn ghost" href="https://www.linkedin.com/in/deon-ludeke/" target="_blank" rel="noopene_
