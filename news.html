@@ -27,6 +27,7 @@
     ul.feed li{margin:0 0 12px}
     .small{font-size:13px}
     .badge{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;background:rgba(124,97,255,.15);border:1px solid rgba(124,97,255,.35);font-size:12px}
+    footer{margin:40px 0 8px;color:#9aa4af;text-align:center;font-size:14px}
   </style>
 </head>
 <body>
@@ -43,21 +44,19 @@
 
     <section class="grid">
       <article class="card">
-        <h2 style="margin-top:0">BBC — Technology<span class="badge" id="bbc-count">0</span></h2>
+        <h2 style="margin-top:0">BBC — Technology <span class="badge" id="bbc-count">0</span></h2>
         <ul id="feed-bbc" class="feed"><li class="muted">Loading…</li></ul>
         <div class="small muted">Source: BBC News</div>
       </article>
 
       <article class="card">
-        <h2 style="margin-top:0">The Register — Security<span class="badge" id="reg-count">0</span></h2>
+        <h2 style="margin-top:0">The Register — Security <span class="badge" id="reg-count">0</span></h2>
         <ul id="feed-reg" class="feed"><li class="muted">Loading…</li></ul>
         <div class="small muted">Source: The Register</div>
       </article>
     </section>
 
-    <footer style="text-align:center;margin:40px 0 8px;color:#9aa4af;font-size:14px">
-      © <span id="year"></span> Deon • News
-    </footer>
+    <footer>© <span id="year"></span> Deon • News</footer>
   </div>
 
   <script>
@@ -65,7 +64,6 @@
 
     async function loadFeeds() {
       try {
-        // Ask the API for more items for the news page
         const res = await fetch('/api/feeds?count=20', { headers: { 'accept': 'application/json' }});
         if (!res.ok) throw new Error('Bad response');
         const { feeds } = await res.json();
