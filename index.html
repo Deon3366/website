@@ -63,4 +63,72 @@
       <h2>Contact</h2>
       <p class="muted">Replace the links with your real profiles.</p>
       <p>
-        <a class="btn ghost" href="https://www.linkedin.com/in/deon-ludeke/" target="_blank" rel="noopene_
+        <a class="btn ghost" href="https://www.linkedin.com/in/deon-ludeke/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn ghost" href="https://discord.com/users/deon3366" target="_blank" rel="noopener">Discord</a>
+      </p>
+    </section>
+
+    <footer>© <span id="year"></span> Deon • Built with HTML/CSS • Deployed via Cloudflare Pages</footer>
+  </div>
+
+  <script>
+    (function () {
+      // 1) Update footer year
+      const yearEl = document.getElementById('year');
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+      // 2) Helper functions
+      const $ = (id) => document.getElementById(id);
+      const setFail = (id, msg) => { const el = $(id); if (el) el.innerHTML = `<li class="muted">${msg}</li>` };
+
+      // 3) Load feeds
+      async function loadFeeds() {
+        try {
+          const r = await fetch('/api/feeds', { headers: { accept: 'application/json' } });
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          const json = await r.json();
+          if (!json || !Array.isArray(json.feeds)) throw new Error('Bad JSON structure');
+
+          const by = (needle) => json.feeds.find(f => (f.source || '').toLowerCase().includes(needle)) || { items: [] };
+
+          const render = (id, items) => {
+            const el = $(id);
+            if (!el) return;
+            el.innerHTML = (items || []).map(i => {
+              const t = (i.title || '').replace(/"/g,'&quot;');
+              const l = (i.link || '#');
+              const d = i.date ? new Date(i.date).toLocaleString() : '';
+              return `<li><a href="${l}" target="_blank" rel="noopener">${t}</a><div class="small muted">${d}</div></li>`;
+            }).join('') || '<li class="muted">No items.</li>';
+          };
+
+          const bbc = by('bbc');
+          const reg = by('register');
+
+          render('feed-bbc', bbc.items);
+          render('feed-reg', reg.items);
+        } catch (err) {
+          console.error('Feed load error:', err);
+          setFail('feed-bbc', 'Failed to load.');
+          setFail('feed-reg',  'Failed to load.');
+        }
+      }
+
+      // 4) Trigger load
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadFeeds);
+      } else {
+        loadFeeds();
+      }
+
+      // 5) Failsafe timeout
+      setTimeout(() => {
+        ['feed-bbc','feed-reg'].forEach(id => {
+          const el = $(id);
+          if (el && /Loading/i.test(el.textContent)) setFail(id, 'Timeout loading.');
+        });
+      }, 8000);
+    })();
+  </script>
+</body>
+</html>
