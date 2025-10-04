@@ -1,7 +1,7 @@
 // functions/api/feeds.js
 export const onRequestGet = async ({ request }) => {
   const FEEDS = [
-    { name: "NCSC — News", url: "https://www.ncsc.gov.uk/api/1/services/v1/news.rss" },
+    { name: "BBC — Technology", url: "https://feeds.bbci.co.uk/news/technology/rss.xml" },
     { name: "The Register — Security", url: "https://www.theregister.com/security/headlines.atom" },
   ];
 
