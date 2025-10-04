@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About — Deon</title>
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    :root{--bg:#0b0d10;--panel:#12151a;--text:#e6edf3;--muted:#9aa4af;--brand:#7c61ff;--accent:#21d4fd;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35)}
+    @media(prefers-color-scheme:light){:root{--bg:#f6f8fb;--panel:#fff;--text:#0b0d10;--muted:#57606a;--brand:#5b43ff;--accent:#0086ff;--shadow:0 10px 30px rgba(0,0,0,.08)}}
+    *{box-sizing:border-box} body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;color:var(--text);background:
+      radial-gradient(1200px 600px at 85% -10%,rgba(124,97,255,.25),transparent 60%),
+      radial-gradient(900px 500px at -10% 20%,rgba(33,212,253,.18),transparent 60%),var(--bg)}
+    .container{max-width:900px;margin:0 auto;padding:32px}
+    a{color:inherit;text-decoration:none}
+    .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);padding:22px;border-radius:16px;box-shadow:var(--shadow)}
+    @media(prefers-color-scheme:light){.card{background:#fff;border-color:#eee}}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .logo{display:flex;align-items:center;gap:12px;font-weight:700}
+    .logo-mark{width:28px;height:28px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--accent))}
+    footer{margin:40px 0 8px;color:#9aa4af;text-align:center;font-size:14px}
+    .badges span{display:inline-block;margin:6px 8px 0 0;padding:6px 10px;border-radius:999px;background:rgba(124,97,255,.15);border:1px solid rgba(124,97,255,.35);font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo"><div class="logo-mark"></div> Deon</div>
+      <nav><a href="index.html">Home</a></nav>
+    </header>
+
+    <article class="card">
+      <h1 style="margin-top:0">About me</h1>
+      <p>Network Security Engineer at a UK MSP. I build automations, harden edges, and keep packets honest.</p>
+      <div class="badges">
+        <span>PowerShell</span><span>Automation</span><span>Cloudflare</span><span>Security</span>
+      </div>
+      <h2>Focus</h2>
+      <ul>
+        <li>Least privilege, visibility, repeatability</li>
+        <li>Turning noisy playbooks into quiet buttons</li>
+        <li>Artifacted reporting & safer Git-driven change</li>
+      </ul>
+
+      <h2>Gaming</h2>
+      <p>When I’m off the clock: FPS, RPGs, and farming. Current rotation:</p>
+      <ul>
+        <li>Call of Duty</li>
+        <li>No Man’s Sky</li>
+        <li>Farming Simulator 25</li>
+      </ul>
+
+      <h2>Contact</h2>
+      <p>
+        <a href="https://www.linkedin.com/in/deon-ludeke/" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://discord.com/users/deon3366" target="_blank" rel="noopener">Discord</a>
+      </p>
+    </article>
+
+    <footer>© <span id="year"></span> Deon</footer>
+  </div>
+  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+</body>
+</html>
