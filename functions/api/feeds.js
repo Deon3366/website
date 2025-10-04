@@ -1,58 +1,84 @@
 // functions/api/feeds.js
-export const onRequestGet = async ({ request, env, next }) => {
+export const onRequestGet = async ({ request }) => {
   const FEEDS = [
-    // NCSC "News" RSS
-    "https://www.ncsc.gov.uk/api/1/services/v1/news.rss",
-    // The Register "Security" RSS
-    "https://www.theregister.com/security/headlines.atom",
+    { name: "NCSC — News", url: "https://www.ncsc.gov.uk/api/1/services/v1/news.rss" },
+    { name: "The Register — Security", url: "https://www.theregister.com/security/headlines.atom" },
   ];
 
-  // Fetch all feeds in parallel
-  const xmls = await Promise.all(
-    FEEDS.map(async (url) => {
-      const res = await fetch(url, { cf: { cacheTtl: 900, cacheEverything: true } });
-      if (!res.ok) throw new Error(`Failed to fetch ${url}`);
-      return { url, text: await res.text() };
+  const ua =
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36";
+
+  const results = await Promise.all(
+    FEEDS.map(async (f) => {
+      try {
+        const res = await fetch(f.url, {
+          headers: { "user-agent": ua, "accept": "application/rss+xml, application/xml, text/xml, */*" },
+          redirect: "follow",
+          cf: { cacheTtl: 900, cacheEverything: true },
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const xml = await res.text();
+        const parsed = parseFeed(xml, f.url);
+        return { source: f.name, ok: true, items: parsed.slice(0, 6) };
+      } catch (err) {
+        return { source: f.name, ok: false, error: String(err), items: [] };
+      }
     })
   );
 
-  // Minimal XML parsing (RSS or Atom) -> {source, items:[{title, link, date}]}
-  const parse = (url, xml) => {
-    // Detect Atom vs RSS by tag presence
-    const isAtom = /<feed[\s>]/i.test(xml) && /<\/feed>/i.test(xml);
+  const url = new URL(request.url);
+  const debug = url.searchParams.get("debug") === "1";
 
-    const take = (arr, n = 5) => arr.slice(0, n);
-
-    if (isAtom) {
-      // Atom: <entry><title>..</title><link href=".."/><updated>..</updated>
-      const entries = [...xml.matchAll(/<entry\b[\s\S]*?<\/entry>/gi)].map((m) => {
-        const block = m[0];
-        const t = (block.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [ , "" ])[1]
-          .replace(/<!\[CDATA\[|\]\]>/g, "")
-          .trim();
-        const l = (block.match(/<link[^>]*href="([^"]+)"/i) || [ , "#" ])[1];
-        const d = (block.match(/<updated[^>]*>([\s\S]*?)<\/updated>/i) || [ , "" ])[1];
-        return { title: t, link: l, date: d };
-      });
-      return { source: url, items: take(entries) };
-    } else {
-      // RSS 2.0: <item><title>..</title><link>..</link><pubDate>..</pubDate>
-      const items = [...xml.matchAll(/<item\b[\s\S]*?<\/item>/gi)].map((m) => {
-        const block = m[0];
-        const t = (block.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [ , "" ])[1]
-          .replace(/<!\[CDATA\[|\]\]>/g, "")
-          .trim();
-        const l = (block.match(/<link[^>]*>([\s\S]*?)<\/link>/i) || [ , "#" ])[1].trim();
-        const d = (block.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/i) || [ , "" ])[1];
-        return { title: t, link: l, date: d };
-      });
-      return { source: url, items: take(items) };
+  return new Response(
+    JSON.stringify(
+      {
+        feeds: results.map((r) => (debug ? r : { source: r.source, items: r.items })),
+        generatedAt: new Date().toISOString(),
+      },
+      null,
+      2
+    ),
+    {
+      headers: {
+        "content-type": "application/json; charset=utf-8",
+        "cache-control": "public, max-age=300",
+      },
     }
-  };
-
-  const data = xmls.map(({ url, text }) => parse(url, text));
-
-  return new Response(JSON.stringify({ feeds: data }), {
-    headers: { "content-type": "application/json; charset=utf-8", "cache-control": "public, max-age=300" },
-  });
+  );
 };
+
+// Very small RSS/Atom parser (regex-based for simplicity)
+function parseFeed(xml, url) {
+  const isAtom = /<feed[\s>]/i.test(xml) && /<\/feed>/i.test(xml);
+  const items = [];
+
+  if (isAtom) {
+    // <entry><title>…</title><link href="…"/><updated>…</updated>
+    const entries = xml.match(/<entry\b[\s\S]*?<\/entry>/gi) || [];
+    for (const block of entries) {
+      const title = capture(block, /<title[^>]*>([\s\S]*?)<\/title>/i);
+      const link = capture(block, /<link[^>]*href="([^"]+)"/i);
+      const date = capture(block, /<updated[^>]*>([\s\S]*?)<\/updated>/i);
+      items.push({ title, link, date });
+    }
+  } else {
+    // RSS: <item><title>…</title><link>…</link><pubDate>…</pubDate>
+    const entries = xml.match(/<item\b[\s\S]*?<\/item>/gi) || [];
+    for (const block of entries) {
+      const title = capture(block, /<title[^>]*>([\s\S]*?)<\/title>/i);
+      const link =
+        capture(block, /<link[^>]*>([\s\S]*?)<\/link>/i) || capture(block, /<guid[^>]*>([\s\S]*?)<\/guid>/i);
+      const date =
+        capture(block, /<pubDate[^>]*>([\s\S]*?)<\/pubDate>/i) ||
+        capture(block, /<dc:date[^>]*>([\s\S]*?)<\/dc:date>/i);
+      items.push({ title, link, date });
+    }
+  }
+  return items;
+
+  function capture(str, re) {
+    const m = str.match(re);
+    if (!m) return "";
+    return m[1].replace(/<!\[CDATA\[|\]\]>/g, "").trim();
+  }
+}
