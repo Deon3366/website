@@ -48,9 +48,9 @@
 
     <section id="feeds" class="grid">
       <article class="card">
-        <h2 style="margin-top:0">NCSC — Latest</h2>
-        <ul id="feed-ncsc" class="feed"><li class="muted">Loading…</li></ul>
-        <div class="small muted">Source: NCSC</div>
+        <h2 style="margin-top:0">BBC — Technology</h2>
+        <ul id="feed-bbc" class="feed"><li class="muted">Loading…</li></ul>
+        <div class="small muted">Source: BBC News</div>
       </article>
       <article class="card">
         <h2 style="margin-top:0">The Register — Security</h2>
@@ -63,8 +63,8 @@
       <h2>Contact</h2>
       <p class="muted">Replace the links with your real profiles.</p>
       <p>
-        <a class="btn ghost" href="https://www.linkedin.com/in/deon-ludeke/" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="btn ghost" href="https://discord.com/users/deon3366" target="_blank" rel="noopener">Discord</a>
+        <a class="btn ghost" href="https://www.linkedin.com/in/YOUR-LINKEDIN" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn ghost" href="https://discord.com/users/YOUR-DISCORD-ID" target="_blank" rel="noopener">Discord</a>
       </p>
     </section>
 
@@ -80,28 +80,9 @@
         if (!res.ok) throw new Error('Bad response');
         const { feeds } = await res.json();
 
-        const by = (needle) => feeds.find(f => f.source.includes(needle));
+        const by = (needle) => feeds.find(f => f.source.toLowerCase().includes(needle));
 
         const render = (el, items) => {
           el.innerHTML = items.map(i => `
             <li>
-              <a href="${i.link}" target="_blank" rel="noopener">${i.title}</a>
-              <div class="small muted">${i.date ? new Date(i.date).toLocaleString() : ""}</div>
-            </li>`).join('');
-        };
-
-        const ncsc = by('ncsc.gov.uk') || feeds[0];
-        const reg  = by('theregister') || feeds[1];
-
-        render(document.getElementById('feed-ncsc'), ncsc?.items || []);
-        render(document.getElementById('feed-reg'),  reg?.items  || []);
-      } catch (e) {
-        document.getElementById('feed-ncsc').innerHTML = '<li class="muted">Failed to load.</li>';
-        document.getElementById('feed-reg').innerHTML  = '<li class="muted">Failed to load.</li>';
-        console.error(e);
-      }
-    }
-    loadFeeds();
-  </script>
-</body>
-</html>
+              <a href
