@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>News — Deon</title>
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    :root{--bg:#0b0d10;--panel:#12151a;--text:#e6edf3;--muted:#9aa4af;--brand:#7c61ff;--accent:#21d4fd;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35)}
+    @media(prefers-color-scheme:light){:root{--bg:#f6f8fb;--panel:#fff;--text:#0b0d10;--muted:#57606a;--brand:#5b43ff;--accent:#0086ff;--shadow:0 10px 30px rgba(0,0,0,.08)}}
+    *{box-sizing:border-box}
+    body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;color:var(--text);background:
+      radial-gradient(1200px 600px at 85% -10%,rgba(124,97,255,.25),transparent 60%),
+      radial-gradient(900px 500px at -10% 20%,rgba(33,212,253,.18),transparent 60%),var(--bg)}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1080px;margin:0 auto;padding:32px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 0 24px}
+    .logo{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px}
+    .logo-mark{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--accent));box-shadow:var(--shadow)}
+    nav a{margin-right:16px}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
+    .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    @media(prefers-color-scheme:light){.card{background:#fff;border-color:#eee}}
+    .muted{color:var(--muted)}
+    ul.feed{list-style:none;padding-left:0;margin:10px 0 0}
+    ul.feed li{margin:0 0 12px}
+    .small{font-size:13px}
+    .badge{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;background:rgba(124,97,255,.15);border:1px solid rgba(124,97,255,.35);font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo"><div class="logo-mark"></div> Deon</div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="news.html" aria-current="page">News</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <h2 style="margin-top:0">BBC — Technology<span class="badge" id="bbc-count">0</span></h2>
+        <ul id="feed-bbc" class="feed"><li class="muted">Loading…</li></ul>
+        <div class="small muted">Source: BBC News</div>
+      </article>
+
+      <article class="card">
+        <h2 style="margin-top:0">The Register — Security<span class="badge" id="reg-count">0</span></h2>
+        <ul id="feed-reg" class="feed"><li class="muted">Loading…</li></ul>
+        <div class="small muted">Source: The Register</div>
+      </article>
+    </section>
+
+    <footer style="text-align:center;margin:40px 0 8px;color:#9aa4af;font-size:14px">
+      © <span id="year"></span> Deon • News
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    async function loadFeeds() {
+      try {
+        // Ask the API for more items for the news page
+        const res = await fetch('/api/feeds?count=20', { headers: { 'accept': 'application/json' }});
+        if (!res.ok) throw new Error('Bad response');
+        const { feeds } = await res.json();
+
+        const by = (needle) => feeds.find(f => f.source.toLowerCase().includes(needle));
+
+        const render = (el, items, countEl) => {
+          el.innerHTML = items.map(i => `
+            <li>
+              <a href="${i.link}" target="_blank" rel="noopener">${i.title}</a>
+              <div class="small muted">${i.date ? new Date(i.date).toLocaleString() : ""}</div>
+            </li>`).join('');
+          if (countEl) countEl.textContent = items.length;
+        };
+
+        const bbc = by('bbc') || feeds[0];
+        const reg = by('register') || feeds[1];
+
+        render(document.getElementById('feed-bbc'), bbc?.items || [], document.getElementById('bbc-count'));
+        render(document.getElementById('feed-reg'), reg?.items || [], document.getElementById('reg-count'));
+      } catch (e) {
+        document.getElementById('feed-bbc').innerHTML = '<li class="muted">Failed to load.</li>';
+        document.getElementById('feed-reg').innerHTML  = '<li class="muted">Failed to load.</li>';
+        console.error(e);
+      }
+    }
+    loadFeeds();
+  </script>
+</body>
+</html>
