@@ -1,4 +1,0 @@
-version: STSv1
-mode: enforce
-mx: ludeke-co-uk.mail.protection.outlook.com
-max_age: 31557600
