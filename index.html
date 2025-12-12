@@ -69,6 +69,16 @@
 
       // 2) Helper functions
       const $ = (id) => document.getElementById(id);
+      const escapeHTML = (str = "") =>
+        str.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+      const safeUrl = (href = "") => {
+        try {
+          const url = new URL(href, location.href);
+          return ["http:", "https:"].includes(url.protocol) ? url.href : "#";
+        } catch (_) {
+          return "#";
+        }
+      };
       const setFail = (id, msg) => { const el = $(id); if (el) el.innerHTML = `<li class="muted">${msg}</li>` };
 
       // 3) Load feeds
@@ -85,8 +95,8 @@
             const el = $(id);
             if (!el) return;
             el.innerHTML = (items || []).map(i => {
-              const t = (i.title || '').replace(/"/g,'&quot;');
-              const l = (i.link || '#');
+              const t = escapeHTML(i.title || '');
+              const l = safeUrl(i.link);
               const d = i.date ? new Date(i.date).toLocaleString() : '';
               return `<li><a href="${l}" target="_blank" rel="noopener">${t}</a><div class="small muted">${d}</div></li>`;
             }).join('') || '<li class="muted">No items.</li>';

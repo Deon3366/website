@@ -61,6 +61,17 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    const escapeHTML = (str = "") =>
+      str.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const safeUrl = (href = "") => {
+      try {
+        const url = new URL(href, location.href);
+        return ["http:", "https:"].includes(url.protocol) ? url.href : "#";
+      } catch (_) {
+        return "#";
+      }
+    };
+
     async function loadFeeds() {
       try {
         const res = await fetch('/api/feeds?count=20', { headers: { 'accept': 'application/json' }});
@@ -72,7 +83,7 @@
         const render = (el, items, countEl) => {
           el.innerHTML = items.map(i => `
             <li>
-              <a href="${i.link}" target="_blank" rel="noopener">${i.title}</a>
+              <a href="${safeUrl(i.link)}" target="_blank" rel="noopener">${escapeHTML(i.title || "")}</a>
               <div class="small muted">${i.date ? new Date(i.date).toLocaleString() : ""}</div>
             </li>`).join('');
           if (countEl) countEl.textContent = items.length;
