@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tools — Deon</title>
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    :root{--bg:#0b0d10;--panel:#12151a;--text:#e6edf3;--muted:#9aa4af;--brand:#7c61ff;--accent:#21d4fd;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35)}
+    @media(prefers-color-scheme:light){:root{--bg:#f6f8fb;--panel:#fff;--text:#0b0d10;--muted:#57606a;--brand:#5b43ff;--accent:#0086ff;--shadow:0 10px 30px rgba(0,0,0,.08)}}
+    *{box-sizing:border-box}
+    body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;color:var(--text);background:
+      radial-gradient(1200px 600px at 85% -10%,rgba(124,97,255,.25),transparent 60%),
+      radial-gradient(900px 500px at -10% 20%,rgba(33,212,253,.18),transparent 60%),var(--bg)}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:900px;margin:0 auto;padding:32px}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .logo{display:flex;align-items:center;gap:12px;font-weight:700}
+    .logo-mark{width:28px;height:28px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--accent))}
+    .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    @media(prefers-color-scheme:light){.card{background:#fff;border-color:#eee}}
+    footer{margin:40px 0 8px;color:var(--muted);text-align:center;font-size:14px}
+    ul.tools{padding-left:18px;line-height:1.7}
+    ul.tools li{margin:0 0 10px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo"><div class="logo-mark"></div> Deon</div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="news.html">News</a>
+        <a href="tools.html" aria-current="page">Tools</a>
+      </nav>
+    </header>
+
+    <article class="card">
+      <h1 style="margin-top:0">Tools I like to use</h1>
+      <p>Here is a list of tools I like to use.</p>
+      <ul class="tools">
+        <li><a href="https://tools.sendmarc.com/domain-analysis" target="_blank" rel="noopener">Sendmarc Domain Analysis</a></li>
+        <li><a href="https://m365maps.com/" target="_blank" rel="noopener">M365 Maps</a></li>
+        <li><a href="https://www.virustotal.com/gui/home/upload" target="_blank" rel="noopener">VirusTotal File Scanner</a></li>
+      </ul>
+    </article>
+
+    <footer>© <span id="year"></span> Deon • Tools</footer>
+  </div>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
