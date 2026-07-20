@@ -4,64 +4,63 @@
   <link rel="icon" href="bimi_ludeke.svg" type="image/svg+xml" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Deon — Under Construction</title>
+  <title>Deon - Home</title>
   <meta name="color-scheme" content="light dark" />
   <style>
     :root{--bg:#0b0d10;--panel:#12151a;--text:#e6edf3;--muted:#9aa4af;--brand:#7c61ff;--accent:#21d4fd;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35)}
     @media(prefers-color-scheme:light){:root{--bg:#f6f8fb;--panel:#fff;--text:#0b0d10;--muted:#57606a;--brand:#5b43ff;--accent:#0086ff;--shadow:0 10px 30px rgba(0,0,0,.08)}}
     *{box-sizing:border-box} html,body{height:100%}
-        /* Make cards smoothly lift up on hover */
-    .card {
-      transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-    .card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(124, 97, 255, 0.3); /* Subtle purple border glow */
-    }
-    /* Subtle link underlines on hover */
-    article a {
-      transition: color 0.15s ease;
-    }
-    article a:hover {
-      color: var(--accent);
-      text-decoration: underline;
-    }
     body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;color:var(--text);background:
       radial-gradient(1200px 600px at 85% -10%,rgba(124,97,255,.25),transparent 60%),
       radial-gradient(900px 500px at -10% 20%,rgba(33,212,253,.18),transparent 60%),var(--bg)}
     a{color:inherit;text-decoration:none}
     .container{max-width:1080px;margin:0 auto;padding:32px}
+
+    /* Header & Navigation */
     header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 0 24px}
     .logo{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px}
     .logo-mark {
       width: 32px;
       height: 32px;
       border-radius: 10px;
-      object-fit: cover; /* Ensures the SVG scales nicely inside the 32x32 box */
+      object-fit: cover;
       box-shadow: var(--shadow);
     }
     header nav{display:flex;align-items:center;gap:16px}
     header nav a{color:var(--muted);font-weight:500;transition:color .15s ease}
     header nav a:hover{color:var(--text)}
     header nav a[aria-current="page"]{color:var(--accent);font-weight:600}
+
+    /* Banner & Layout */
     .banner{text-align:center;padding:12px;background:linear-gradient(90deg,var(--brand),var(--accent));color:#fff;font-weight:600;border-radius:var(--radius);margin-bottom:24px}
     .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
     @media(max-width:900px){.grid{grid-template-columns:1fr}}
-    .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    
+    /* Cards & Hover Effects */
+    .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow);transition: transform 0.2s ease, border-color 0.2s ease;}
     @media(prefers-color-scheme:light){.card{background:#fff;border-color:#eee}}
+    .card:hover { transform: translateY(-3px); border-color: rgba(124, 97, 255, 0.3); }
+
     .muted{color:var(--muted)}
     ul.feed{list-style:none;padding-left:0;margin:10px 0 0}
     ul.feed li{margin:0 0 10px}
+    article a { transition: color 0.15s ease; }
+    article a:hover { color: var(--accent); text-decoration: underline; }
+
     .small{font-size:13px}
     footer{margin:40px 0 8px;color:var(--muted);font-size:14px;text-align:center}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--accent));color:white;font-weight:600;box-shadow:var(--shadow)}
+    
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--accent));color:white;font-weight:600;box-shadow:var(--shadow);transition: opacity 0.2s ease;}
+    .btn:hover{opacity: 0.9;}
     .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--text)}
+    .btn.ghost:hover{border-color: var(--accent);}
     @media(prefers-color-scheme:light){.btn.ghost{border-color:rgba(0,0,0,.12)}}
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="banner">🚧 UNDER CONSTRUCTION — main site is being built. In the meantime, here are fresh UK security headlines.</div>
+    <div class="banner">🚧 UNDER CONSTRUCTION - main site is being built. In the meantime, here are fresh UK security headlines.</div>
 
     <header>
       <div class="logo"><img src="bimi_ludeke.svg" alt="Logo" class="logo-mark" /> Deon</div>
@@ -73,14 +72,28 @@
       </nav>
     </header>
 
+    <!-- Hero Section -->
+    <section style="margin-bottom: 32px; text-align: center; padding: 20px 0;">
+      <h1 style="font-size: 36px; margin: 0 0 12px; line-height: 1.2;">
+        Hi, I'm <span style="background: linear-gradient(135deg, var(--brand), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Deon</span>.
+      </h1>
+      <p style="font-size: 18px; color: var(--muted); max-width: 600px; margin: 0 auto 20px;">
+        Network Security Engineer focused on infrastructure defense, automation, and operational security.
+      </p>
+      <div style="display: flex; gap: 12px; justify-content: center;">
+        <a href="about.html" class="btn">About Me →</a>
+        <a href="tools.html" class="btn ghost">View Tools</a>
+      </div>
+    </section>
+
     <section id="feeds" class="grid">
       <article class="card">
-        <h2 style="margin-top:0">BBC — Technology</h2>
+        <h2 style="margin-top:0">BBC - Technology</h2>
         <ul id="feed-bbc" class="feed"><li class="muted">Loading…</li></ul>
         <div class="small muted">Source: BBC News</div>
       </article>
       <article class="card">
-        <h2 style="margin-top:0">The Register — Security</h2>
+        <h2 style="margin-top:0">The Register - Security</h2>
         <ul id="feed-reg" class="feed"><li class="muted">Loading…</li></ul>
         <div class="small muted">Source: The Register</div>
       </article>
