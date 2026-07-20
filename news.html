@@ -4,56 +4,49 @@
   <link rel="icon" href="bimi_ludeke.svg" type="image/svg+xml" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>News — Deon</title>
+  <title>News - Deon</title>
   <meta name="color-scheme" content="light dark" />
   <style>
     :root{--bg:#0b0d10;--panel:#12151a;--text:#e6edf3;--muted:#9aa4af;--brand:#7c61ff;--accent:#21d4fd;--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35)}
     @media(prefers-color-scheme:light){:root{--bg:#f6f8fb;--panel:#fff;--text:#0b0d10;--muted:#57606a;--brand:#5b43ff;--accent:#0086ff;--shadow:0 10px 30px rgba(0,0,0,.08)}}
-    *{box-sizing:border-box}
-            /* Make cards smoothly lift up on hover */
-    .card {
-      transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-    .card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(124, 97, 255, 0.3); /* Subtle purple border glow */
-    }
-    /* Subtle link underlines on hover */
-    article a {
-      transition: color 0.15s ease;
-    }
-    article a:hover {
-      color: var(--accent);
-      text-decoration: underline;
-    }
+    *{box-sizing:border-box} html,body{height:100%}
     body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;color:var(--text);background:
       radial-gradient(1200px 600px at 85% -10%,rgba(124,97,255,.25),transparent 60%),
       radial-gradient(900px 500px at -10% 20%,rgba(33,212,253,.18),transparent 60%),var(--bg)}
     a{color:inherit;text-decoration:none}
     .container{max-width:1080px;margin:0 auto;padding:32px}
+
+    /* Header & Navigation */
     header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 0 24px}
     .logo{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px}
     .logo-mark {
       width: 32px;
       height: 32px;
       border-radius: 10px;
-      object-fit: cover; /* Ensures the SVG scales nicely inside the 32x32 box */
+      object-fit: cover;
       box-shadow: var(--shadow);
     }
     header nav{display:flex;align-items:center;gap:16px}
     header nav a{color:var(--muted);font-weight:500;transition:color .15s ease}
     header nav a:hover{color:var(--text)}
     header nav a[aria-current="page"]{color:var(--accent);font-weight:600}
+
+    /* Grid & Cards */
     .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
     @media(max-width:900px){.grid{grid-template-columns:1fr}}
-    .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    
+    .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow);transition: transform 0.2s ease, border-color 0.2s ease;}
     @media(prefers-color-scheme:light){.card{background:#fff;border-color:#eee}}
+    .card:hover { transform: translateY(-3px); border-color: rgba(124, 97, 255, 0.3); }
+
     .muted{color:var(--muted)}
     ul.feed{list-style:none;padding-left:0;margin:10px 0 0}
-    ul.feed li{margin:0 0 12px}
+    ul.feed li{margin:0 0 10px}
+    article a { transition: color 0.15s ease; }
+    article a:hover { color: var(--accent); text-decoration: underline; }
+
     .small{font-size:13px}
-    .badge{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;background:rgba(124,97,255,.15);border:1px solid rgba(124,97,255,.35);font-size:12px}
-    footer{margin:40px 0 8px;color:#9aa4af;text-align:center;font-size:14px}
+    footer{margin:40px 0 8px;color:var(--muted);font-size:14px;text-align:center}
   </style>
 </head>
 <body>
@@ -68,66 +61,87 @@
       </nav>
     </header>
 
-    <section class="grid">
-      <article class="card">
-        <h2 style="margin-top:0">BBC — Technology <span class="badge" id="bbc-count">0</span></h2>
-        <ul id="feed-bbc" class="feed"><li class="muted">Loading…</li></ul>
-        <div class="small muted">Source: BBC News</div>
-      </article>
+    <main>
+      <h1 style="margin-top:0">Security & Tech News</h1>
+      <p style="color: var(--muted); margin-bottom: 24px;">Latest security feeds pulled from around the UK web.</p>
 
-      <article class="card">
-        <h2 style="margin-top:0">The Register — Security <span class="badge" id="reg-count">0</span></h2>
-        <ul id="feed-reg" class="feed"><li class="muted">Loading…</li></ul>
-        <div class="small muted">Source: The Register</div>
-      </article>
-    </section>
+      <section id="feeds" class="grid">
+        <article class="card">
+          <h2 style="margin-top:0">BBC - Technology</h2>
+          <ul id="feed-bbc" class="feed"><li class="muted">Loading…</li></ul>
+          <div class="small muted">Source: BBC News</div>
+        </article>
+        <article class="card">
+          <h2 style="margin-top:0">The Register - Security</h2>
+          <ul id="feed-reg" class="feed"><li class="muted">Loading…</li></ul>
+          <div class="small muted">Source: The Register</div>
+        </article>
+      </section>
+    </main>
 
     <footer>© <span id="year"></span> Deon • News</footer>
   </div>
 
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    (function () {
+      const yearEl = document.getElementById('year');
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-    const escapeHTML = (str = "") =>
-      str.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-    const safeUrl = (href = "") => {
-      try {
-        const url = new URL(href, location.href);
-        return ["http:", "https:"].includes(url.protocol) ? url.href : "#";
-      } catch (_) {
-        return "#";
+      const $ = (id) => document.getElementById(id);
+      const escapeHTML = (str = "") =>
+        str.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+      const safeUrl = (href = "") => {
+        try {
+          const url = new URL(href, location.href);
+          return ["http:", "https:"].includes(url.protocol) ? url.href : "#";
+        } catch (_) {
+          return "#";
+        }
+      };
+      const setFail = (id, msg) => { const el = $(id); if (el) el.innerHTML = `<li class="muted">${msg}</li>` };
+
+      async function loadFeeds() {
+        try {
+          const r = await fetch('/api/feeds', { headers: { accept: 'application/json' } });
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          const json = await r.json();
+          if (!json || !Array.isArray(json.feeds)) throw new Error('Bad JSON structure');
+
+          const by = (needle) => json.feeds.find(f => (f.source || '').toLowerCase().includes(needle)) || { items: [] };
+
+          const render = (id, items) => {
+            const el = $(id);
+            if (!el) return;
+            el.innerHTML = (items || []).map(i => {
+              const t = escapeHTML(i.title || '');
+              const l = safeUrl(i.link);
+              const d = i.date ? new Date(i.date).toLocaleString() : '';
+              return `<li><a href="${l}" target="_blank" rel="noopener">${t}</a><div class="small muted">${d}</div></li>`;
+            }).join('') || '<li class="muted">No items.</li>';
+          };
+
+          render('feed-bbc', by('bbc').items);
+          render('feed-reg', by('register').items);
+        } catch (err) {
+          console.error('Feed load error:', err);
+          setFail('feed-bbc', 'Failed to load.');
+          setFail('feed-reg',  'Failed to load.');
+        }
       }
-    };
 
-    async function loadFeeds() {
-      try {
-        const res = await fetch('/api/feeds?count=20', { headers: { 'accept': 'application/json' }});
-        if (!res.ok) throw new Error('Bad response');
-        const { feeds } = await res.json();
-
-        const by = (needle) => feeds.find(f => f.source.toLowerCase().includes(needle));
-
-        const render = (el, items, countEl) => {
-          el.innerHTML = items.map(i => `
-            <li>
-              <a href="${safeUrl(i.link)}" target="_blank" rel="noopener">${escapeHTML(i.title || "")}</a>
-              <div class="small muted">${i.date ? new Date(i.date).toLocaleString() : ""}</div>
-            </li>`).join('');
-          if (countEl) countEl.textContent = items.length;
-        };
-
-        const bbc = by('bbc') || feeds[0];
-        const reg = by('register') || feeds[1];
-
-        render(document.getElementById('feed-bbc'), bbc?.items || [], document.getElementById('bbc-count'));
-        render(document.getElementById('feed-reg'), reg?.items || [], document.getElementById('reg-count'));
-      } catch (e) {
-        document.getElementById('feed-bbc').innerHTML = '<li class="muted">Failed to load.</li>';
-        document.getElementById('feed-reg').innerHTML  = '<li class="muted">Failed to load.</li>';
-        console.error(e);
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadFeeds);
+      } else {
+        loadFeeds();
       }
-    }
-    loadFeeds();
+
+      setTimeout(() => {
+        ['feed-bbc','feed-reg'].forEach(id => {
+          const el = $(id);
+          if (el && /Loading/i.test(el.textContent)) setFail(id, 'Timeout loading.');
+        });
+      }, 8000);
+    })();
   </script>
 </body>
 </html>
