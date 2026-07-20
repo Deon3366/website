@@ -19,6 +19,10 @@
     .logo-mark{width:28px;height:28px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--accent))}
     .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow)}
     @media(prefers-color-scheme:light){.card{background:#fff;border-color:#eee}}
+    header nav{display:flex;align-items:center;gap:16px}
+    header nav a{color:var(--muted);font-weight:500;transition:color .15s ease}
+    header nav a:hover{color:var(--text)}
+    header nav a[aria-current="page"]{color:var(--accent);font-weight:600}
     footer{margin:40px 0 8px;color:var(--muted);text-align:center;font-size:14px}
     ul.tools{padding-left:18px;line-height:1.7}
     ul.tools li{margin:0 0 10px}
