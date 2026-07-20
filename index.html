@@ -31,12 +31,10 @@
     header nav a:hover{color:var(--text)}
     header nav a[aria-current="page"]{color:var(--accent);font-weight:600}
 
-    /* Banner & Layout */
-    .banner{text-align:center;padding:12px;background:linear-gradient(90deg,var(--brand),var(--accent));color:#fff;font-weight:600;border-radius:var(--radius);margin-bottom:24px}
+    /* Grid & Cards */
     .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
     @media(max-width:900px){.grid{grid-template-columns:1fr}}
     
-    /* Cards & Hover Effects */
     .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow);transition: transform 0.2s ease, border-color 0.2s ease;}
     @media(prefers-color-scheme:light){.card{background:#fff;border-color:#eee}}
     .card:hover { transform: translateY(-3px); border-color: rgba(124, 97, 255, 0.3); }
@@ -60,8 +58,6 @@
 </head>
 <body>
   <div class="container">
-    <div class="banner">🚧 UNDER CONSTRUCTION - main site is being built. In the meantime, here are fresh UK security headlines.</div>
-
     <header>
       <div class="logo"><img src="bimi_ludeke.svg" alt="Logo" class="logo-mark" /> Deon</div>
       <nav>
