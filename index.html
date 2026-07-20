@@ -33,7 +33,13 @@
     .container{max-width:1080px;margin:0 auto;padding:32px}
     header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 0 24px}
     .logo{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px}
-    .logo-mark{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--accent));box-shadow:var(--shadow)}
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      object-fit: cover; /* Ensures the SVG scales nicely inside the 32x32 box */
+      box-shadow: var(--shadow);
+    }
     header nav{display:flex;align-items:center;gap:16px}
     header nav a{color:var(--muted);font-weight:500;transition:color .15s ease}
     header nav a:hover{color:var(--text)}
@@ -58,7 +64,7 @@
     <div class="banner">🚧 UNDER CONSTRUCTION — main site is being built. In the meantime, here are fresh UK security headlines.</div>
 
     <header>
-      <div class="logo"><div class="logo-mark"></div> Deon</div>
+      <div class="logo"><img src="bimi_ludeke.svg" alt="Logo" class="logo-mark" /> Deon</div>
       <nav>
         <a href="index.html" aria-current="page">Home</a>
         <a href="about.html">About</a>
