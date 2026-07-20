@@ -18,6 +18,10 @@
     header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
     .logo{display:flex;align-items:center;gap:12px;font-weight:700}
     .logo-mark{width:28px;height:28px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--accent))}
+    header nav{display:flex;align-items:center;gap:16px}
+    header nav a{color:var(--muted);font-weight:500;transition:color .15s ease}
+    header nav a:hover{color:var(--text)}
+    header nav a[aria-current="page"]{color:var(--accent);font-weight:600}
     footer{margin:40px 0 8px;color:#9aa4af;text-align:center;font-size:14px}
     .badges span{display:inline-block;margin:6px 8px 0 0;padding:6px 10px;border-radius:999px;background:rgba(124,97,255,.15);border:1px solid rgba(124,97,255,.35);font-size:13px}
   </style>
@@ -28,6 +32,7 @@
       <div class="logo"><div class="logo-mark"></div> Deon</div>
       <nav>
         <a href="index.html">Home</a>
+        <a href="about.html" aria-current="page">About</a>
         <a href="news.html">News</a>
         <a href="tools.html">Tools</a>
       </nav>
@@ -37,7 +42,7 @@
       <h1 style="margin-top:0">About me</h1>
 
       <p>
-        Network Security Engineer at a UK MSP. I design, secure, and automate infrastructure —
+        Network Security Escalation Engineer at a UK MSP. I design, secure, and automate infrastructure —
         currently deepening my knowledge through the <strong>CompTIA SecurityX</strong> learning path.
       </p>
 
